@@ -13,3 +13,12 @@ hs_err_pid*
 
 *.iml
 target/
+
+.classpath
+.project
+.idea/libraries/*.xml
+.idea/*.xml
+.idea/.gitignore
+
+.settings/*.prefs
+
