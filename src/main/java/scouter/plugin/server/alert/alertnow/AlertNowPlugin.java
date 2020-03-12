@@ -96,11 +96,7 @@ public class AlertNowPlugin {
                                     ap.time = System.currentTimeMillis();
                                     ap.objType = objectPack.objType;
 
-                                    Map<String, Object> mp = new HashMap<>();
-                                    mp.put("metricName", "thread_count");
-                                    mp.put("metricValue", threadCount);
-                                    mp.put("threshold", threadCountThreshold);
-                                    alert(ap, mp);
+                                    alert(ap);
                                 }
                             }
                         } catch (Exception e) {
@@ -114,7 +110,7 @@ public class AlertNowPlugin {
     }
 
     @ServerPlugin(PluginConstants.PLUGIN_SERVER_ALERT)
-    public void alert(final AlertPack pack, Map<String, Object> mp) {
+    public void alert(final AlertPack pack) {
         if (conf.getBoolean("ext_plugin_alertnow_send_alert", false)) {
             // Get log level (0 : INFO, 1 : WARN, 2 : ERROR, 3 : FATAL)
             int level = conf.getInt("ext_plugin_alertnow_level", 0);
@@ -144,29 +140,22 @@ public class AlertNowPlugin {
                                 title = "An object has been inactivated.";
                                 msg = pack.message.substring(0, pack.message.indexOf("OBJECT") - 1);
                             }
-                            String urgency = "lowest";
+                            String urgency = "";
                             switch (pack.level) {
-                                case  0: urgency = "low";     break;
+                                case  0: urgency = "lowest";  break;
                                 case  1: urgency = "medium";  break;
                                 case  2: urgency = "high";    break;
                                 case  3: urgency = "highest"; break;
-                                default: urgency = "lowest";  break;
+                                default: urgency = "none";    break;
                             }
                             String payload = "{" +
+                                                "\"title\":\""          + title                          + "\","  +
                                                 "\"summary\":\""        + msg                            + "\"," +
-//												"\"event_id\":\""       + event_id                       + "\"," +
-//												"\"status\":\""         + "open"                         + "\"," +
-                                                "\"urgency\":\""        + urgency                        + "\"," +
                                                 "\"event_time\":\""     + pack.time                      + "\"," +
-                                                "\"metric_name\":\""    + mp.get("metricName")           + "\"," +
-                                                "\"threshold\":\""      + mp.get("threshold")            + "\"," +
-                                                "\"metric_value\":\""   + mp.get("metricValue")          + "\"," +
-                                                "\"resource_name\":\""  + name                           + "\"," +
                                                 "\"event_type\":\""     + AlertLevel.getName(pack.level) + "\"," +
-                                                "\"custom_details\":{"  +
-                                                    "\"type\":\""       + pack.objType.toUpperCase()     + "\"," +
-                                                    "\"title\":\""      + title                          + "\""  +
-                                                "}"                     +
+                                                "\"type\":\""           + pack.objType.toUpperCase()     + "\"," +
+                                                "\"resource_name\":\""  + name                           + "\"," +
+                                                "\"urgency\":\""        + urgency                        + "\""  +
                                              "}";
 
                             if (conf.getBoolean("ext_plugin_alertnow_debug", false)) {
@@ -211,11 +200,6 @@ public class AlertNowPlugin {
             AlertPack ap = null;
             ObjectPack op = AgentManager.getAgent(pack.objHash);
 
-            Map<String, Object> mp = new HashMap<>();
-            mp.put("metricName", "object");
-            mp.put("metricValue", "");
-            mp.put("threshold", "");
-
             if (op == null && pack.wakeup == 0L) {
                 // in case of new agent connected
                 ap = new AlertPack();
@@ -231,7 +215,7 @@ public class AlertNowPlugin {
                     ap.objType = "scouter";
                 }
 
-                alert(ap, mp);
+                alert(ap);
             } else if (op.alive == false) {
                 // in case of agent reconnected
                 ap = new AlertPack();
@@ -242,7 +226,7 @@ public class AlertNowPlugin {
                 ap.time = System.currentTimeMillis();
                 ap.objType = AgentManager.getAgent(pack.objHash).objType;
 
-                alert(ap, mp);
+                alert(ap);
             }
             // inactive state can be handled in alert() method.
         }
@@ -265,12 +249,7 @@ public class AlertNowPlugin {
                 ap.time = System.currentTimeMillis();
                 ap.objType = objType;
 
-                Map<String, Object> mp = new HashMap<>();
-                mp.put("metricName", "xlog_error");
-                mp.put("metricValue", "");
-                mp.put("threshold", "");
-
-                alert(ap, mp);
+                alert(ap);
             }
 
             try {
@@ -290,12 +269,7 @@ public class AlertNowPlugin {
                     ap.time = System.currentTimeMillis();
                     ap.objType = objType;
 
-                    Map<String, Object> mp = new HashMap<>();
-                    mp.put("metricName", "elapsed_time");
-                    mp.put("metricValue", pack.elapsed + " ms");
-                    mp.put("threshold", elapsedThreshold + " ms");
-
-                    alert(ap, mp);
+                    alert(ap);
                 }
 
             } catch (Exception e) {
@@ -342,12 +316,7 @@ public class AlertNowPlugin {
                         ap.time = System.currentTimeMillis();
                         ap.objType = objType;
 
-                        Map<String, Object> mp = new HashMap<>();
-                        mp.put("metricName", "GC_time");
-                        mp.put("metricValue", gcTime + " ms");
-                        mp.put("threshold", gcTimeThreshold + " ms");
-
-                        alert(ap, mp);
+                        alert(ap);
                     }
                 }
             }
