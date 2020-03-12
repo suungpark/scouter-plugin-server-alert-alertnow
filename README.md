@@ -4,6 +4,7 @@
 - this project inspired by slack plugin project of 23king. thanks for this project.
 
 - this project is  scouter server plugin project. this project goal is that send message to AlertNow.
+  (*[What is AlertNow?](https://www.opsnow.com/service/alertnow))
 -  this project only support a sort of Alert.
 	- CPU of Agent  (warning / fatal)
 	- Memory of Agent (warning / fatal)
@@ -11,20 +12,23 @@
 	- connected new Agent
 	- disconnected Agent
 	- reconnect Agent
+    - Elapsed time threshold exceeded
+    - GC Time threshold exceeded
+    - Threshold of thread count exceeded
 
 ### Properties (you can modify in conf/scouter.conf of scouter server home )
 * **_ext\_plugin\_alertnow\_send\_alert_** : can send AlertNow message or can'not  (true / false) - default : false
 * **_ext\_plugin\_alertnow\_debug_** : can log message or can't  - default false
 * **_ext\_plugin\_alertnow\_level_** : log level (0 : INFO, 1 : WARN, 2 : ERROR, 3 : FATAL) - default 0
 * **_ext\_plugin\_alertnow\_webhook_url_** : AlertNow WebHook URL
-* **_ext\_plugin\_elapsed\_time\_threshold_** : 응답시간의 임계치 (ms) - 기본 값은 0으로, 0일때 응답시간의 임계치 초과 여부를 확인하지 않는다.
-* **_ext\_plugin\_gc\_time\_threshold_** : GC Time의 임계치 (ms) - 기본 값은 0으로, 0일때 GC Time의 임계치 초과 여부를 확인하지 않는다.
-* **_ext\_plugin\_thread\_count\_threshold_** : Thread Count의 임계치 - 기본 값은 0으로, 0일때 Thread Count의 임계치 초과 여부를 확인하지 않는다.
+* **_ext\_plugin\_elapsed\_time\_threshold_** : Threshold of elapsed time (ms) - The default value is 0, and when it is 0, it does not check whether the response time exceeds the threshold.
+* **_ext\_plugin\_gc\_time\_threshold_** : GC Time Threshold (ms) - The default value is 0, and when it is 0, it does not check whether the GC Time threshold is exceeded.
+* **_ext\_plugin\_thread\_count\_threshold_** : Threshold of Thread Count - The default value is 0, and when it is 0, it does not check whether the thread count threshold is exceeded.
 * **_ext\_plugin\_alertnow\_xlog\_enabled_** : xlog maasege send (true / false) - default : false
 
 * Example
 ```
-# External Interface (alertnow)
+# External Interface (AlertNow)
 ext_plugin_alertnow_send_alert=true
 ext_plugin_alertnow_debug=true
 ext_plugin_alertnow_level=1
@@ -51,4 +55,4 @@ ext_plugin_thread_count_threshold=300
     - mvn clean package
 
 * Deploy
-    - 빌드 후 프로젝트 하위에 target 디렉토리가 생기며, scouter-plugin-server-alert-alertnow-1.0.0-SNAPSHOT.jar 파일을 복사하여 스카우터 서버 설치 경로 하위의 lib/ 폴더에 저장한다.
+    - After building, the target directory is created under the project, and copy the scouter-plugin-server-alert-alertnow-1.0.0-SNAPSHOT.jar file and save it in the lib/ folder under the scouter server installation path.
