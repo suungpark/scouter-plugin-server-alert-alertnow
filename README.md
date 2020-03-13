@@ -4,8 +4,8 @@
 - this project inspired by slack plugin project of 23king. thanks for this project.
 
 - this project is  scouter server plugin project. this project goal is that send message to AlertNow.
-  (*[What is AlertNow?](https://www.opsnow.com/service/alertnow))
--  this project only support a sort of Alert.
+
+- this project only support a sort of Alert.
 	- CPU of Agent  (warning / fatal)
 	- Memory of Agent (warning / fatal)
 	- Disk of Agent (warning / fatal)

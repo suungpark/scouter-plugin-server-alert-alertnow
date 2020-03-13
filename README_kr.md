@@ -4,7 +4,7 @@
 - 23king 님의 slack plugin project를 토대로 만들었습니다. 감사합니다.
 
 - 본 프로젝트는 스카우터 서버 플러그인으로써 서버에서 발생한 Alert 을 AertNow 로 전송하는 역할을 한다.
-  (*[AlertNow 란?](https://www.opsnow.com/service/alertnow))
+  
 - 현재 지원되는 Alert의 종류는 다음과 같다.
 	- Agent의 CPU (warning / fatal)
 	- Agent의 Memory (warning / fatal)
