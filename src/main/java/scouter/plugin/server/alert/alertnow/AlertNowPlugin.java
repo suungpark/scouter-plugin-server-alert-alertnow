@@ -134,12 +134,14 @@ public class AlertNowPlugin {
                                 }
                             }
 
-                            String title = pack.title;
+                            String title = pack.title.replaceAll("\"", "\\\\\"");;
                             String msg = pack.message;
                             if (title.equals("INACTIVE_OBJECT")) {
                                 title = "An object has been inactivated.";
                                 msg = pack.message.substring(0, pack.message.indexOf("OBJECT") - 1);
                             }
+                            msg = msg.replaceAll("\"", "\\\\\"");
+                            
                             String urgency = "";
                             switch (pack.level) {
                                 case  0: urgency = "lowest";  break;
